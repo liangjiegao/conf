@@ -1,0 +1,21 @@
+{
+    "name": "yiyu/conf",
+    "description": "custom conf",
+    "type": "1",
+    "require": {
+        "php": ">= 7.3.0"
+    },
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "Yiyu\\Conf\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "liangjiegao",
+            "email": "1445808283@qq.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
