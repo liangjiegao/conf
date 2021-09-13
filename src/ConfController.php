@@ -23,8 +23,8 @@ class ConfController extends Controller
         $params[] = ['input' => 'content',  'type' => 'array',  'empty' => true];
         $params[] = ['input' => 'type',     'type' => 'string', 'length' => 1];
 
-        $params[] = ['input' => 'comp_id',  'type' => 'string'];
-        $params[] = ['input' => 'uid',      'type' => 'string'];
+        $params[] = ['input' => 'comp_key',  'type' => 'string'];
+        $params[] = ['input' => 'user_key',      'type' => 'string'];
         $requestParams = $this->paramsFilter($params, $request, $service);
         if ($requestParams['code'] != CodeConf::SUCCESS){
             return UtilsClass::getCallbackJson($requestParams['code']);
@@ -60,8 +60,8 @@ class ConfController extends Controller
         $params[] = ['input' => 'keyword',  'type' => 'string', 'empty' => true];
         $params[] = ['input' => 'unit',     'type' => 'string', 'empty' => true];
         $params[] = ['input' => 'type',     'type' => 'string'];
-        $params[] = ['input' => 'comp_id',  'type' => 'string'];
-        $params[] = ['input' => 'uid',      'type' => 'string'];
+        $params[] = ['input' => 'comp_key',  'type' => 'string'];
+        $params[] = ['input' => 'user_key',      'type' => 'string'];
         $requestParams = $this->paramsFilter($params, $request, $service);
         if ($requestParams['code'] != CodeConf::SUCCESS){
             return UtilsClass::getCallbackJson($requestParams['code']);
@@ -78,8 +78,8 @@ class ConfController extends Controller
     public function delOne(Request $request, ConfService $service){
 
         $params[] = ['input' => 'key',      'type' => 'string'];
-        $params[] = ['input' => 'comp_id',  'type' => 'string'];
-        $params[] = ['input' => 'uid',      'type' => 'string'];
+        $params[] = ['input' => 'comp_key',  'type' => 'string'];
+        $params[] = ['input' => 'user_key',      'type' => 'string'];
         $requestParams = $this->paramsFilter($params, $request, $service);
         if ($requestParams['code'] != CodeConf::SUCCESS){
             return UtilsClass::getCallbackJson($requestParams['code']);

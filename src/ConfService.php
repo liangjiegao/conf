@@ -3,6 +3,7 @@
 
 namespace Yiyu\Conf;
 
+use App\Models\Conf;
 use Superl\Permission\Service;
 use Superl\Permission\UtilsClass;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +13,7 @@ class ConfService extends Service
 
     public function getOne(string $key)
     {
-        $conf = Conf::query() -> where(['conf_key' => $key, 'comp_id' => $this->comp_id]) -> first(['conf_key as key', 'content', 'type']);
+        $conf = Conf::query() -> where(['conf_key' => $key, 'comp_key' => $this->comp_key]) -> first(['conf_key as key', 'content', 'type']);
 
         if (empty($conf)){
             $this->_code = CodeConf::CONF_NOT_EXIST;
@@ -26,7 +27,7 @@ class ConfService extends Service
 
     public function getList(array $search)
     {
-        $query = Conf::query() -> where(['comp_id' => $this->comp_id]);
+        $query = Conf::query() -> where(['comp_key' => $this->comp_key]);
 
         if (!empty($search['type'])){
             $query->where(['type' => $search['type']]);
@@ -62,8 +63,8 @@ class ConfService extends Service
         if (empty($confKey)){
             $conf = new Conf();
             $conf->conf_key = $this->buildKey('conf');
-            $conf->uid = $this->uid;
-            $conf->comp_id = $this->comp_id;
+            $conf->user_key = $this->user_key;
+            $conf->comp_key = $this->comp_key;
             $conf->type = $data['type'];
         }
         // 修改
@@ -93,7 +94,7 @@ class ConfService extends Service
     public function delOne(string $key)
     {
         $conf = Conf::query()
-            -> where(['conf_key' => $key, 'comp_id' => $this->comp_id])
+            -> where(['conf_key' => $key, 'comp_key' => $this->comp_key])
             -> first();
 
         if (empty($conf)){
@@ -120,13 +121,14 @@ class ConfService extends Service
 
     }
 
+    // 映射配置到列表中（整个content）
     public function mapConf(array $list, array $cols){
         $keys = [];
         foreach ($cols as $col) {
             $keys = array_merge($keys, array_column($list, $col));
         }
         $confList = Conf::query()
-            -> where(['comp_id' => $this->comp_id])
+            -> where(['comp_key' => $this->comp_key])
             -> whereIn('conf_key', $keys)
             -> get(['conf_key as key', 'content', 'type'])
             -> toArray();
@@ -147,6 +149,41 @@ class ConfService extends Service
         }
         return $list;
     }
+
+    // 映射配置到列表中（映射到具体属性）
+    public function mapConfCol(array $list, array $cols)
+    {
+        $keys = [];
+        foreach ($cols as $key => $col) {
+            $keys = array_merge($keys, array_column($list, $key));
+        }
+
+        // 本地获取
+        $confList = Conf::query()
+            ->where(['comp_id' => $this->comp_id])
+            ->whereIn('conf_key', $keys)
+            ->get(['conf_key as key', 'content', 'type'])
+            ->toArray();
+
+        for ($i = 0; $i < count($confList); $i++) {
+            $confList[$i]['content'] = json_decode($confList[$i]['content'], true);
+        }
+        for ($i = 0; $i < count($list); $i++) {
+            foreach ($cols as $key => $col) {
+                foreach ($col as $cK => $cV) {
+                    $list[$i][$cK] = null;
+                    foreach ($confList as $conf) {
+                        if ($list[$i][$key] === $conf['key']) {
+                            $list[$i][$cK] = $conf['content'][$cV] ?? '';
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return $list;
+    }
+
 
     public function mapContacts(array $list){
         $contacts = [];
