@@ -13,7 +13,7 @@ class ConfService extends Service
 
     public function getOne(string $key)
     {
-        $conf = Conf::query() -> where(['conf_key' => $key, 'comp_key' => $this->comp_key]) -> first(['conf_key as key', 'content', 'type']);
+        $conf = Conf::query() -> where(['conf_key' => $key, 'comp_key' => $this->compKey]) -> first(['conf_key as key', 'content', 'type']);
 
         if (empty($conf)){
             $this->_code = CodeConf::CONF_NOT_EXIST;
@@ -27,7 +27,7 @@ class ConfService extends Service
 
     public function getList(array $search)
     {
-        $query = Conf::query() -> where(['comp_key' => $this->comp_key]);
+        $query = Conf::query() -> where(['comp_key' => $this->compKey]);
 
         if (!empty($search['type'])){
             $query->where(['type' => $search['type']]);
@@ -63,8 +63,8 @@ class ConfService extends Service
         if (empty($confKey)){
             $conf = new Conf();
             $conf->conf_key = $this->buildKey('conf');
-            $conf->user_key = $this->user_key;
-            $conf->comp_key = $this->comp_key;
+            $conf->user_key = $this->userKey;
+            $conf->comp_key = $this->compKey;
             $conf->type = $data['type'];
         }
         // 修改
@@ -94,7 +94,7 @@ class ConfService extends Service
     public function delOne(string $key)
     {
         $conf = Conf::query()
-            -> where(['conf_key' => $key, 'comp_key' => $this->comp_key])
+            -> where(['conf_key' => $key, 'comp_key' => $this->compKey])
             -> first();
 
         if (empty($conf)){
@@ -128,7 +128,7 @@ class ConfService extends Service
             $keys = array_merge($keys, array_column($list, $col));
         }
         $confList = Conf::query()
-            -> where(['comp_key' => $this->comp_key])
+            -> where(['comp_key' => $this->compKey])
             -> whereIn('conf_key', $keys)
             -> get(['conf_key as key', 'content', 'type'])
             -> toArray();
