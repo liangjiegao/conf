@@ -21,7 +21,7 @@ class ConfController extends Controller
 
         $params[] = ['input' => 'key',      'type' => 'string', 'empty' => true, 'length' => 32];
         $params[] = ['input' => 'content',  'type' => 'array',  'empty' => true];
-        $params[] = ['input' => 'type',     'type' => 'string', 'length' => 1];
+        $params[] = ['input' => 'type',     'type' => 'string', 'length' => 3];
 
         $params[] = ['input' => 'comp_key',  'type' => 'string'];
         $params[] = ['input' => 'user_key',      'type' => 'string'];
