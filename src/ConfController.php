@@ -6,7 +6,6 @@ namespace Yiyu\Conf;
 
 
 use Superl\Permission\Controller;
-use Superl\Permission\UtilsClass;
 use Illuminate\Http\Request;
 
 
