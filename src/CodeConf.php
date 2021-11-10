@@ -11,9 +11,9 @@ namespace Yiyu\Conf;
 class CodeConf
 {
     const SUCCESS = 10000;
-    const CONF_NOT_EXIST        = 50002;
     const MYSQL_WRITE_FAIL      = 30002;
     const EXCEPTION             = 30005;
+    const CONF_NOT_EXIST        = 50010;
 
 
 
